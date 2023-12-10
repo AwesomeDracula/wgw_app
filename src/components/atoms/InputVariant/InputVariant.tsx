@@ -7,10 +7,12 @@ import {
 } from 'react-native';
 
 import { useTheme } from '@/theme';
+import { FieldError } from 'react-hook-form';
 
 type Props = TextInputProps & {
 	title: string;
 	suffix?: JSX.Element;
+	error?: FieldError;
 };
 
 const styles = StyleSheet.create({
@@ -21,11 +23,11 @@ const styles = StyleSheet.create({
 		letterSpacing: 0.3,
 	},
 	text: {
-		letterSpacing: 0.8,
+		// letterSpacing: 0.8,
 	},
 });
 
-function InputVariant({ title, suffix, ...props }: Props) {
+function InputVariant({ title, suffix, error, ...props }: Props) {
 	const { layout, borders, gutters, fonts } = useTheme();
 	return (
 		<View>
@@ -48,6 +50,7 @@ function InputVariant({ title, suffix, ...props }: Props) {
 					borders.rounded_4,
 					styles.inputContainer,
 					layout.justifyBetween,
+					layout.itemsCenter,
 				]}
 			>
 				<TextInput
@@ -56,12 +59,14 @@ function InputVariant({ title, suffix, ...props }: Props) {
 				/>
 				{suffix && suffix}
 			</View>
+			{error && <Text style={[fonts.red500]}>{error.message}</Text>}
 		</View>
 	);
 }
 
 InputVariant.defaultProps = {
 	suffix: undefined,
+	error: undefined,
 };
 
 export default InputVariant;

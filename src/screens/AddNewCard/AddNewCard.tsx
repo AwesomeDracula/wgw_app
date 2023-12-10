@@ -8,7 +8,7 @@ import OmiseIcon from '@/theme/assets/images/omise.png';
 import VerifiedByVisa from '@/theme/assets/images/verifiedByVisa.png';
 import { isImageSourcePropType } from '@/types/guards/image';
 import { ApplicationScreenProps } from '@/types/navigation';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import JcbIcon from '@/theme/assets/images/jcb.png';
 import MasterCardIcon from '@/theme/assets/images/mastercard.png';
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 		height: 15,
 	},
 	parralelInput: {
-		minWidth: '40%',
+		width: '45%',
 	},
 	brand: {
 		height: 20,
@@ -125,9 +125,7 @@ function AddNewCard({ navigation }: Readonly<ApplicationScreenProps>) {
 					onPress: () => navigation.goBack(),
 				}}
 			/>
-			<ScrollView
-				contentContainerStyle={[layout.flex_1, gutters.paddingHorizontal_24]}
-			>
+			<ScrollView contentContainerStyle={[gutters.paddingHorizontal_24]}>
 				<View style={[gutters.marginTop_24]}>
 					<Controller
 						control={control}
@@ -157,13 +155,11 @@ function AddNewCard({ navigation }: Readonly<ApplicationScreenProps>) {
 								onBlur={onBlur}
 								onChangeText={onChange}
 								value={value}
+								error={errors.cardNumber}
 							/>
 						)}
 						name="cardNumber"
 					/>
-					{errors.cardNumber && (
-						<Text style={[fonts.red500]}>{errors?.cardNumber?.message}</Text>
-					)}
 				</View>
 				<View style={[gutters.marginTop_24]}>
 					<Controller
@@ -181,47 +177,41 @@ function AddNewCard({ navigation }: Readonly<ApplicationScreenProps>) {
 								onBlur={onBlur}
 								onChangeText={onChange}
 								value={value}
+								error={errors.nameOnCard}
 							/>
 						)}
 						name="nameOnCard"
 					/>
-					{errors.nameOnCard && (
-						<Text style={[fonts.red500]}>{errors?.nameOnCard?.message}</Text>
-					)}
 				</View>
 				<View style={[layout.row, layout.justifyBetween, gutters.marginTop_24]}>
-					<View>
-						<Controller
-							control={control}
-							rules={{
-								required: {
-									value: true,
-									message: 'This is required.',
-								},
-								minLength: {
-									value: 5,
-									message: 'MM/YY expected.',
-								},
-								maxLength: {
-									value: 5,
-									message: 'MM/YY expected.',
-								},
-								pattern: {
-									value: /^\d+\/\d+$/,
-									message: 'Bad format.',
-								},
-							}}
-							render={({ field: { onChange, onBlur, value } }) => (
+					<Controller
+						control={control}
+						rules={{
+							required: {
+								value: true,
+								message: 'This is required.',
+							},
+							minLength: {
+								value: 5,
+								message: 'MM/YY expected.',
+							},
+							maxLength: {
+								value: 5,
+								message: 'MM/YY expected.',
+							},
+							pattern: {
+								value: /^\d+\/\d+$/,
+								message: 'Bad format.',
+							},
+						}}
+						render={({ field: { onChange, onBlur, value } }) => (
+							<View style={styles.parralelInput}>
 								<InputVariant
-									style={[
-										layout.itemsStart,
-										styles.parralelInput,
-										fonts.medium,
-										fonts.size_16,
-									]}
+									style={[layout.itemsStart, fonts.medium, fonts.size_16]}
 									title={t('card:expiryDate')}
 									placeholder="MM/YY"
 									onBlur={onBlur}
+									error={errors.expiryDate}
 									onChangeText={(text: string) => {
 										let formatText = text;
 										if (text.length > 2 && text[2] !== '/') {
@@ -233,54 +223,44 @@ function AddNewCard({ navigation }: Readonly<ApplicationScreenProps>) {
 									}}
 									value={value}
 								/>
-							)}
-							name="expiryDate"
-						/>
-						{errors.expiryDate && (
-							<Text style={[fonts.red500]}>{errors?.expiryDate?.message}</Text>
+							</View>
 						)}
-					</View>
-					<View>
-						<Controller
-							control={control}
-							rules={{
-								required: {
-									value: true,
-									message: 'This is required.',
-								},
-								minLength: {
-									value: 3,
-									message: 'Min length must be 3.',
-								},
-								maxLength: {
-									value: 3,
-									message: 'Max length must be 3.',
-								},
-								pattern: {
-									value: /^\d+$/,
-									message: 'Contains only numbers.',
-								},
-							}}
-							render={({ field: { onChange, onBlur, value } }) => (
+						name="expiryDate"
+					/>
+					<Controller
+						control={control}
+						rules={{
+							required: {
+								value: true,
+								message: 'This is required.',
+							},
+							minLength: {
+								value: 3,
+								message: 'Min length must be 3.',
+							},
+							maxLength: {
+								value: 3,
+								message: 'Max length must be 3.',
+							},
+							pattern: {
+								value: /^\d+$/,
+								message: 'Contains only numbers.',
+							},
+						}}
+						render={({ field: { onChange, onBlur, value } }) => (
+							<View style={styles.parralelInput}>
 								<InputVariant
-									style={[
-										layout.itemsEnd,
-										styles.parralelInput,
-										fonts.medium,
-										fonts.size_16,
-									]}
+									style={[layout.itemsEnd, fonts.medium, fonts.size_16]}
 									title={t('card:cvv')}
 									onBlur={onBlur}
 									onChangeText={onChange}
 									value={value}
+									error={errors.cvv}
 								/>
-							)}
-							name="cvv"
-						/>
-						{errors.cvv && (
-							<Text style={[fonts.red500]}>{errors?.cvv?.message}</Text>
+							</View>
 						)}
-					</View>
+						name="cvv"
+					/>
 				</View>
 				<View style={[layout.row, layout.justifyCenter, gutters.marginTop_40]}>
 					<ImageVariant

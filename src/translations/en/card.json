@@ -1,0 +1,12 @@
+{
+  "title": "Cards",
+  "emptyCardTitle": "No Cards Found",
+  "emptyCardDescription": "We recommend adding a card for easy payment",
+  "addNewCard": "Add New Card",
+  "nameOnCard": "Name on Card",
+  "expires": "Expires",
+  "cardNumber": "ATM/Debit/Credit card number",
+  "expiryDate": "Expiry date",
+  "cvv": "CVV",
+  "addCardBtn": "Add Card"
+}
